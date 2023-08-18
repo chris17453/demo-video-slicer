@@ -1,0 +1,10 @@
+*.mp4
+*.mkv
+*.flac
+*.mp3
+*.tgz
+*.png
+*.jpg
+*.txt
+.vscode
+.vscode-upload.json
