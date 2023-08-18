@@ -16,7 +16,7 @@
 # Directory structure
 CUR_DIR="$(realpath "./")"
 TEMP="$CUR_DIR/temp"
-ORIGINAL="$CUR_DIR/original"
+ASSETS="$CUR_DIR/original"
 
 # TEMP files
 CONCAT="$TEMP/merged-video.mp4"
@@ -28,13 +28,25 @@ AUDIO_TRACK="$TEMP/audio-track.mp3"
 VIDEO="$CUR_DIR/output.mp4"
 
 # the image to convert into a the video clop
-IMAGE="$ORIGINAL/intro.png"
+IMAGE="$ASSETS/intro.png"
 INTRO="$TEMP/intro.mp4"
 
 # These are the list files ffmpeg uses as inputs
 CODE_LIST="$TEMP/code-list.txt"
 AUDIO_LIST="$TEMP/audio-list.txt"
 VIDEO_LIST="$TEMP/video-list.txt"
+
+create_directory() {
+  dir="$1"
+
+  if [ ! -d "$dir" ]; then
+    mkdir -p "$dir"
+    echo "Directory '$dir' created."
+  else
+    echo "Directory '$dir' already exists."
+  fi
+}
+
 
 list_files() {
   # Parameters
@@ -82,12 +94,17 @@ rm -f "$VIDEO_LIST"
 
 echo "file 'file:$INTRO'">"$VIDEO_LIST"
 echo "file 'file:$SPEEDUP'">>"$VIDEO_LIST"
+
+create_directory "$ASSETS"
+create_directory "$TEMP"
+
+
 # creates a list of video files to concat, orders numerically asc
-list_files "$ORIGINAL" "mkv" "$CODE_LIST"
+list_files "$ASSETS" "mkv" "$CODE_LIST"
 check_last_command_status
 
 # creates a list of audio files to concat, orders numerically asc
-list_files "$ORIGINAL" "flac" "$AUDIO_LIST"
+list_files "$ASSETS" "flac" "$AUDIO_LIST"
 check_last_command_status
 
 
